@@ -1,0 +1,122 @@
+Q1
+
+
+import java.util.List;
+import java.util.*;
+class ProteinTranslator {
+
+    List<String> translate(String rnaSequence) {
+        List<String> l = new ArrayList<>();
+        Map<String,String> res = new HashMap<>();
+        res.put("AUG","Methionine");
+        res.put("UUU","Phenylalanine");
+        res.put("UUC","Phenylalanine");
+        res.put("UUA","Leucine");
+        res.put("UUG","Leucine");
+        res.put("UCU","Serine");
+        res.put("UCC","Serine");
+        res.put("UCA","Serine");
+        res.put("UCG","Serine");
+        res.put("UAU","Tyrosine");
+        res.put("UAC","Tyrosine");
+        res.put("UGU","Cysteine");
+        res.put("UGC","Cysteine");
+        res.put("UGG","Tryptophan");
+        res.put("UAA","STOP");
+        res.put("UAG","STOP");
+        res.put("UGA","STOP");
+
+        for(int i = 0;i<rnaSequence.length();i+=3){
+            
+            if(i+3>rnaSequence.length()){
+                throw new IllegalArgumentException("Invalid codon");
+                }
+            String cur = rnaSequence.substring(i,i+3);
+             if(res.containsKey(cur) && res.get(cur).equals("STOP")){
+                  return l;
+                    }
+            else if(res.containsKey(cur))
+            {
+                l.add(res.get(cur));
+            }
+            else{
+                throw new IllegalArgumentException("Invalid codon");
+            }
+        }
+        return l; 
+    }
+}
+
+
+Q2
+
+import java.util.*;
+
+class DiamondPrinter {
+
+    List<String> printToList(char a) {
+        List<String> res = new ArrayList<>();
+        int times = a - 'A' + 1;
+        char c = 'A';
+        for (int i = 0; i < times; i++) {
+            StringBuilder t = new StringBuilder();
+            int outerSpaces = times - i - 1;
+            int innerSpaces =  2 * i - 1;
+
+            // for leading spaces
+            t.append(" ".repeat(outerSpaces));
+      
+            t.append(c);
+            
+            if (i > 0) {
+                t.append(" ".repeat(innerSpaces));
+                t.append(c);
+            }
+           
+            t.append(" ".repeat(outerSpaces));
+
+            c++;
+            res.add(t.toString());
+        }
+
+        // Create the bottom part of the diamond
+        for (int i = times - 2; i >= 0; i--) {
+            res.add(res.get(i));
+        }
+
+        return res;
+    }
+}
+
+
+Q3
+
+
+class IsbnVerifier {
+
+    boolean isValid(String stringToVerify) {
+        int num = 10;
+        int res = 0;
+        if(stringToVerify.length() < 10){
+            return false;
+            }
+        for(int i = 0;i<stringToVerify.length();i++){
+            if(num == 0) return false;
+            if(Character.isDigit(stringToVerify.charAt(i))){
+                res += (stringToVerify.charAt(i)-'0') * num--;
+            }
+            else if(stringToVerify.charAt(i) == 'X'){
+                if( i == stringToVerify.length()-1)
+                  res += (10) * num--;
+                 else return false;
+            }
+            else{
+                if(!(stringToVerify.charAt(i) == '-'))
+                   return false;
+                
+            }
+        }
+        return res%11==0;
+        
+    }
+}
